@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boundary Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script>
+    // Initialize the map (no need to set initial view coordinates, we will set this dynamically)
+    var map = L.map('map');
+
+    // Add the OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+    }).addTo(map);
+
+    // Fetch the boundary data from the Flask server
+    fetch('/boundary')
+        .then(response => response.json())
+        .then(data => {
+            // Create a GeoJSON layer and add it to the map
+            var geoJsonLayer = L.geoJSON(data).addTo(map);
+
+            // Fit the map's view to the bounds of the GeoJSON layer
+            map.fitBounds(geoJsonLayer.getBounds());
+        });
+</script>
+
+</body>
+</html>
