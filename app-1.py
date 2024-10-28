@@ -4,7 +4,7 @@ import json
 app = Flask(__name__)
 
 # Load your .json boundary file (assuming it's in the same directory)
-with open('Dhaka-Dhaka.json') as f:
+with open('dhaka-city.json') as f:
     boundary_data = json.load(f)
 
 @app.route('/')
